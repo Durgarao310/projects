@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <div class="body-matter">
+        <h4><strong>{{ post.title }}</strong> <em>program lang:</em> {{ post.pro_lang }}</h4>
+        <small><a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a><strong> on </strong> {{ post.date_posted }}</small>
+        <p><pre>{{ post.code }}</pre></p>
+        {% if post.author == request.user %}
+        <button class="btn"><a href="{% url 'post-delete' pk=post.pk %}">post delete</a></button>
+        <button class="btn"><a href="{% url 'post-edit' pk=post.pk %}">post edit</a><br></button>
+        {% endif %}
+        <h3 class="comments">comments</h3><br>
+        {% for comment in post.comments.all %}
+            {% if user.is_authenticated or comment.approved_comment %}
+                    {% if not comment.approved_comment %}
+                        <button class="btn"><a  href="{% url 'comment_remove' pk=comment.pk %}">cancel</a></button>
+                        <button class="btn"><a  href="{% url 'comment_approve' pk=comment.pk %}">approve</a></button>
+                    {% endif %}
+                    <strong>{{ comment.author }} on {{ comment.date }}</strong>
+                    <p><pre>{{ comment.comment|linebreaks }}</pre></p>
+                    {% if comment.author == request.user %}
+                        <button class="btn"><a href="{% url 'comment_edit' pk=comment.pk %}">edit the comment</a></button>
+                    {% endif %}
+            {% endif %}
+        {% endfor %}
+        <button class="btn"><a href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a></button>
+</div>
+{% endblock content %}

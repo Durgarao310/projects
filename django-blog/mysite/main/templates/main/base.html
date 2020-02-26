@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% if title%}
+        <title>{{title }}</title>
+    {% else %}
+        <title>snipit</title>
+    {% endif %}
+<body>
+    <ul>
+        <li>
+            <h1><a href="{% url 'post-list' %}">SnipIt</a></h1>
+        </li>
+        <li>
+            <a href="/home/">Home</a>
+        </li>
+        <li>
+            <a href="/about/">About</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li>
+            <a href="/logout/">Logout</a>
+        </li>
+        <li>
+            <a href="{% url 'post-new' %}">New Post</a>
+        </li>
+        <li>
+            <a href="/profile/">Profile</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="/login/">Login</a>
+        </li>
+        <li>
+            <a href="/register/">Register</a>
+        </li>
+        {% endif %}
+    </ul>
+    {% if messages %}
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

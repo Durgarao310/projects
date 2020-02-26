@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+{% block styles %}
+    <style>
+        .page-title{
+            text-align: center;
+            padding: 10px 0;
+        }
+        .tech-cards{
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .tech-card{
+            display: flex;
+            align-items: center;
+            border: 1px solid #DEE0E4;
+            padding: 5px 15px;
+            width: 300px;
+            margin: 10px 5px;
+            border-radius: 10px;
+            cursor: pointer;
+           transition: all .1s;
+        }
+        .tech-card:hover{
+           box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+        }
+        .tech-card a{
+            color: #8B00FF;
+            font-size: 16px;
+        }
+        .tech-logo{
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+    </style>
+{% endblock styles %}
+<section>
+    <h1 class="page-title">Technologies</h1>
+    <div class="tech-cards">
+        {% for tech in technologies %}
+            <div class="tech-card">
+                <img src="{{tech.img}}" class="tech-logo"/>
+                <a href="{% url 'tech_detail' pk=tech.pk %}">{{ tech.title }}</a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/main/main.css?{% now "U" %}">
+    <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto&display=swap" rel="stylesheet">
+    {% if title%}
+    <title>{{ title }}</title>
+    {% else %}
+        <title>snipit</title>
+    {% endif %}
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <h1 class="site-logo"><a class="site-logo"href="/">Snip It</a></h1>
+            <ul class="nav-items">
+                {% if user.is_authenticated %}
+                <li class="nav-items__item">
+                    <a href="/logout/">Logout</a>
+                </li>
+                <li class="nav-items__item">
+                    <a href="{% url 'add-post' %}">New Post</a>
+                </li>
+                <li class="nav-items__item">
+                    <a href="/profile/">Profile</a>
+                </li>
+            </ul>
+                {% else %}
+            <ul class="nav-items">
+                <li class="nav-items__item">
+                    <a href="/login/">Login</a>
+                </li>
+                <li class="nav-items__item">
+                    <a href="/register/">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    {% block content %} {% endblock %}
+</body>
+</html>

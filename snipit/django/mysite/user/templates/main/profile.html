@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h5>{{ user.username }}</h5>
+    <h1>{{ user.profile.image.url }}</h1>
+    <img class="dp" src="{{ user.profile.image.url }}">
+    <small>{{ user.email }}</small>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <small>Profile Info</small>
+        {{ u_form|crispy }}
+        {{ p_form|crispy }}
+        <button class="btn" type="submit">Update</button>
+    </form> 
+{% endblock content %}

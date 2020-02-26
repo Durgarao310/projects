@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block content %}
+  <div class="body-matter">
+    {% for post in posts %}
+      <div class="pt-list">
+          <div class="pt-dt">
+            <img class="dp" src="{{ post.author.profile.image.url }}">
+            <a class="user" href="{% url 'user-posts' post.author.username %}"><h3 class="user">{{ post.author }}</h3></a>
+          </div>
+          <div class="title">
+            <h5><a href="{% url 'post-detail' pk=post.pk %}" >Code or Description: {{ post.title }}</a></h5>
+          </div>
+            <p><pre class="code">{{ post.code }}</pre></p>
+          <div class="cmt-like">
+            <a href="{% url 'post-like' pk=post.pk %}"><img class="like-btn" src="https://cdn.pixabay.com/photo/2017/05/15/23/44/heart-icon-2316451_960_720.png">{{ post.likes }}</a>
+            <b class="comments">comments:{{ post.comments.count }}</b>
+          </div>
+      </div>
+          {% endfor %}
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+      <button class="btn"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></button>
+      <button class="btn"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></button>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <button class="btn"><a href="?page={{ num }}">{{ num }}</a></button>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <button class="btn"><a href="?page={{ num }}">{{ num }}</a></button>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <button class="btn"><a href="?page={{ page_obj.next_page_number }}">Next</a></button>
+      <button class="btn"><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></button>
+    {% endif %}
+  </div>
+  {% endif %}
+{% endblock content %}

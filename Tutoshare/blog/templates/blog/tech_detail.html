@@ -1,0 +1,129 @@
+{% extends 'blog/base.html' %}
+{% load upvote_utils %}
+{% block styles %}
+    <style>
+        .tech-detail-container{
+            width: 100%;
+            border: 1px solid red;
+            text-align: center;
+            padding: 100px;
+            color: #393F43;
+        }
+        .tech-details-card{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px 10px;
+        }
+        .tech-details-card img{
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .tech-details-card .tech-info{
+            display: flex;
+            flex-direction: column;
+        }
+        .tech-info h1{
+            margin-bottom: 10px;
+            color: #393F43
+            
+        }
+        .tutorials{
+            width: 80%;
+            margin: 0 auto;
+        }
+        .tutorial-card{
+            display: flex;
+            border: 1px solid #DEE0E4;  
+            padding: 30px 15px;  
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+        }
+        .upvotes{
+            padding: 20px;
+            position: relative;
+        }
+        .upvote-symbol{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -5px;
+            left: 15px;
+            font-size: 40px;
+        }
+        .tutorial-info{
+            display: flex;
+            flex-direction: column;
+        }
+        .tutorial-card__footer{
+            padding: 5px 0px;
+            display: flex;
+            align-items: baseline;
+        }
+        .tutorial_tags{
+            display: flex;
+            padding: 0px 10px;
+        }
+        .tutorial_tags__item{
+            margin-right: 5px;
+            background-color: #DEE0E4;
+            text-align: center;
+            max-width: 100px;
+            height: 30px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 15px;
+
+        }
+    </style>
+{% endblock styles %}
+
+{% block content %}
+    <div class="tech-detail-container">
+        <div class="tech-details-card">
+            <img src="{{technology.img}}" />
+            <div class="tech-info">
+                <h1>{{technology.title}} Tutorials and Courses</h1>
+                <p>Learn {{technology.title}} online from the best {{technology.title}} tutorials submitted & voted by the programming community.</p>
+            </div>
+        </div>
+        <!-- <button class="btn btn-default"><a href="/tech/">Go Back</a></button> -->
+        <div class="tutorials">
+            {% for tutorial in tutorials %}
+                <div class="tutorial-card">
+                    <div class="upvotes"> 
+                        {% if request.user.is_authenticated and tutorial|is_upvoted_by:request.user %}
+                            <a href="{% url 'tut_unupvote' pk=tutorial.pk %}">
+                                <span class="upvote-symbol">^</span>
+                                {{ tutorial.upvote }}
+                            </a>
+                        {% else %}
+                            <a href="{% url 'tut_upvote' pk=tutorial.pk %}">
+                                <span class="upvote-symbol" style="color: #999ea9">^</span>
+                                {{ tutorial.upvote }}
+                            </a>
+                        {% endif %}   
+                    </div>
+                    <div class="tutorial-info">
+                        <div class="tutorial-info__name">
+                            <h3><a href="{{ tutorial.url }}" target="__blank">{{ tutorial.websitename }}</a><h3>
+                        </div>
+                        <div class="tutorial-card__footer">
+                            <div class="">Submited By <span style="font-weight: bold">{{ tutorial.users }}</span></div>
+                            <ul class="tutorial_tags">
+                                <li class="tutorial_tags__item">{{ tutorial.type }}</li>
+                                <li class="tutorial_tags__item">{{ tutorial.plan }}</li>
+                                <li class="tutorial_tags__item">{{ tutorial.audience }}</li>
+                            </ul>        
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}        
+    
+        </div>
+    </div>
+{% endblock content %}

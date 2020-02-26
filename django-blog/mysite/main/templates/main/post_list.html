@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+{% block content %}
+    {% for post in posts %}
+        <img src="{{ post.author.profile.image.url }}" >
+        <p><strong>{{ post.author }}</strong> on <em>{{ post.date_posted }}</em></p>
+        <h4><a href="{% url 'post-detail' pk=post.pk %}">{{ post.title}}</a></h4>
+        <p><em>{{ post.pro_language }}</em></p>
+        <p>{{ post.code }}</p>
+        <a href="{% url 'post-like' pk=post.pk %}">like{{ post.likes }}</a>
+        <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
+        {% endfor %}
+{% endblock content %}m
